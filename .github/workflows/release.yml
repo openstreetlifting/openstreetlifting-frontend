@@ -20,6 +20,9 @@ jobs:
   verify-ci:
     name: Verify CI passed
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
