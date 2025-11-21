@@ -1,5 +1,5 @@
 import { apiClient } from '../client';
-import type { Competition, CompetitionFilters } from '$lib/types/competition';
+import type { Competition, CompetitionDetail, CompetitionFilters } from '$lib/types/competition';
 
 export const competitionsService = {
 	/**
@@ -12,9 +12,9 @@ export const competitionsService = {
 	},
 
 	/**
-	 * Get a single competition by ID
+	 * Get a single competition by ID or slug with full details including groups, participants, and lifts
 	 */
-	async getById(id: string): Promise<Competition> {
-		return apiClient.get<Competition>(`/api/competitions/${id}`);
+	async getById(id: string): Promise<CompetitionDetail> {
+		return apiClient.get<CompetitionDetail>(`/api/competitions/${id}/detailed`);
 	}
 };
