@@ -1,5 +1,5 @@
-import { PUBLIC_OPENSTREETLIFTING_API_URL } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
 export const config = {
-	apiUrl: PUBLIC_OPENSTREETLIFTING_API_URL || 'http://localhost:8080'
+	apiUrl: env.PUBLIC_OPENSTREETLIFTING_API_URL || 'http://localhost:8080'
 } as const;
