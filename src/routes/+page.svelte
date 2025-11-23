@@ -11,7 +11,9 @@
 	<meta name="description" content={data.description} />
 </svelte:head>
 
-<div class="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col justify-center px-4 py-8 sm:px-6 sm:py-12">
+<div
+	class="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-7xl flex-col justify-center px-4 py-8 sm:px-6 sm:py-12"
+>
 	<!-- Subtle ambient background glow - very minimal -->
 	<div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
 		<div></div>
@@ -29,7 +31,8 @@
 		<p
 			class="mt-6 max-w-2xl text-xl leading-8 font-light text-zinc-500 sm:mt-8 sm:text-2xl sm:leading-9"
 		>
-			OpenStreetlifting is an <span class="keyword-glow">open</span>, collaborative project building a <span class="keyword-glow">permanent</span> and <span class="keyword-glow">traceable</span> archive
+			OpenStreetlifting is an <span class="keyword-glow">open</span>, collaborative project building
+			a <span class="keyword-glow">permanent</span> and <span class="keyword-glow">traceable</span> archive
 			of all streetlifting data, accessible to everyone.
 		</p>
 	</div>
