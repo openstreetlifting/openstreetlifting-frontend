@@ -30,7 +30,7 @@
 			year: 'numeric'
 		});
 
-	const getSortState = (categoryId: string): { key: SortKey; direction: SortDirection} =>
+	const getSortState = (categoryId: string): { key: SortKey; direction: SortDirection } =>
 		categorySortState.get(categoryId) ?? { key: 'rank', direction: 'asc' };
 
 	function toggleSort(categoryId: string, key: SortKey) {
