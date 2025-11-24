@@ -207,7 +207,10 @@
 							<th class="px-4 py-3 text-left font-medium text-zinc-400">Country</th>
 							{#each movements as movement (movement.value)}
 								<th
-									class="cursor-pointer px-4 py-3 text-left font-medium transition-colors select-none hover:text-white {movementFilter === movement.value ? 'text-white' : 'text-zinc-400'}"
+									class="cursor-pointer px-4 py-3 text-left font-medium transition-colors select-none hover:text-white {movementFilter ===
+									movement.value
+										? 'text-white'
+										: 'text-zinc-400'}"
 									onclick={() => {
 										movementFilter = movement.value;
 										handleFilterChange();
