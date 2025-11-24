@@ -8,7 +8,7 @@ export const competitionsService = {
 		});
 	},
 
-	async getById(id: string): Promise<CompetitionDetail> {
-		return apiClient.get<CompetitionDetail>(`/api/competitions/${id}/detailed`);
+	async getById(slug: string): Promise<CompetitionDetail> {
+		return apiClient.get<CompetitionDetail>(`/api/competitions/${slug}/detailed`);
 	}
 };

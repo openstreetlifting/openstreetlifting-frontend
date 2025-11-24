@@ -7,51 +7,43 @@
 	import { SvelteMap } from 'svelte/reactivity';
 
 	let { data }: { data: PageData } = $props();
-	const { competition } = data;
+	const competition = data.competition;
 
 	type SortKey = 'total' | 'ris_score' | 'bodyweight' | string;
 	type SortDirection = 'asc' | 'desc';
 
 	// Store sort state per category (SvelteMap is already reactive)
-	let categorySortState = new SvelteMap<string, { key: SortKey; direction: SortDirection }>();
+	const categorySortState = new SvelteMap<string, { key: SortKey; direction: SortDirection }>();
 
-	// Active category tab
-	let activeCategory = $state<string>(competition.categories?.[0]?.category.category_id || '');
+	// Active category tab - allow manual override, but default to first category
+	let selectedCategoryId = $state<string | null>(null);
+	const activeCategory = $derived(
+		selectedCategoryId || competition.categories?.[0]?.category.category_id || ''
+	);
 
-	function formatWeight(weight: string | null): string {
-		if (!weight) return '-';
-		return `${weight} kg`;
-	}
+	const formatWeight = (weight: string | null): string => (weight ? `${weight} kg` : '-');
 
-	function formatDate(dateString: string): string {
-		return new Date(dateString).toLocaleDateString('en-US', {
+	const formatDate = (dateString: string): string =>
+		new Date(dateString).toLocaleDateString('en-US', {
 			month: 'long',
 			day: 'numeric',
 			year: 'numeric'
 		});
-	}
 
-	function getSortState(categoryId: string) {
-		if (!categorySortState.has(categoryId)) {
-			categorySortState.set(categoryId, { key: 'total', direction: 'desc' });
-		}
-		return categorySortState.get(categoryId)!;
-	}
+	const getSortState = (categoryId: string): { key: SortKey; direction: SortDirection } =>
+		categorySortState.get(categoryId) ?? { key: 'rank', direction: 'asc' };
 
 	function toggleSort(categoryId: string, key: SortKey) {
-		const current = getSortState(categoryId);
+		const current = { ...getSortState(categoryId) };
 
 		if (current.key === key) {
-			// Toggle direction if same key
 			current.direction = current.direction === 'desc' ? 'asc' : 'desc';
 		} else {
-			// New key, default to desc (highest first) for weights and totals
-			current.direction = 'desc';
+			current.direction = key === 'rank' ? 'asc' : 'desc';
 		}
 
 		current.key = key;
-		// Reassign to trigger reactivity
-		categorySortState = new SvelteMap(categorySortState.set(categoryId, current));
+		categorySortState.set(categoryId, current);
 	}
 
 	function sortParticipants(participants: Participant[], categoryId: string) {
@@ -61,7 +53,13 @@
 			let valueA: number;
 			let valueB: number;
 
-			if (key === 'total') {
+			if (key === 'rank') {
+				// Rank: null/undefined go last, then sort by numeric value
+				if (a.rank == null) return 1;
+				if (b.rank == null) return -1;
+				valueA = a.rank;
+				valueB = b.rank;
+			} else if (key === 'total') {
 				valueA = parseFloat(a.total) || 0;
 				valueB = parseFloat(b.total) || 0;
 			} else if (key === 'ris_score') {
@@ -69,7 +67,7 @@
 				valueB = parseFloat(b.ris_score || '0') || 0;
 			} else if (key === 'bodyweight') {
 				valueA = parseFloat(a.bodyweight || '0') || 0;
-				valueB = parseFloat(b.bodyweight || '0') || 0;
+				valueB = parseFloat(a.bodyweight || '0') || 0;
 			} else {
 				// Sort by movement name (key is the movement name)
 				const liftA = a.lifts.find((l) => l.movement_name === key);
@@ -82,11 +80,10 @@
 		});
 	}
 
-	function getSortDirection(categoryId: string, key: SortKey): 'none' | 'asc' | 'desc' {
+	const getSortDirection = (categoryId: string, key: SortKey): 'none' | 'asc' | 'desc' => {
 		const { key: currentKey, direction } = getSortState(categoryId);
-		if (currentKey !== key) return 'none';
-		return direction;
-	}
+		return currentKey !== key ? 'none' : direction;
+	};
 </script>
 
 <svelte:head>
@@ -156,14 +153,14 @@
 	</div>
 
 	<!-- Categories -->
-	{#if competition.categories && competition.categories.length > 0}
+	{#if competition.categories?.length}
 		<!-- Category Tabs -->
 		{#if competition.categories.length > 1}
 			<div class="mb-6 border-b border-zinc-800">
 				<nav class="-mb-px flex gap-2 overflow-x-auto" aria-label="Category tabs">
 					{#each competition.categories as categoryDetail (categoryDetail.category.category_id)}
 						<button
-							onclick={() => (activeCategory = categoryDetail.category.category_id)}
+							onclick={() => (selectedCategoryId = categoryDetail.category.category_id)}
 							class="border-b-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 focus:ring-offset-zinc-950 focus:outline-none
 								{activeCategory === categoryDetail.category.category_id
 								? 'border-white text-white'
@@ -197,12 +194,21 @@
 						</div>
 
 						<!-- Participants -->
-						{#if categoryDetail.participants && categoryDetail.participants.length > 0}
+						{#if categoryDetail.participants?.length}
 							<div class="overflow-x-auto">
 								<table class="w-full text-sm">
 									<thead class="sticky top-0 z-10">
 										<tr class="border-b border-zinc-800 bg-zinc-900 shadow-lg shadow-zinc-950/50">
-											<th class="px-4 py-3 text-left font-medium text-zinc-400">Rank</th>
+											<th
+												class="cursor-pointer px-4 py-3 text-left font-medium text-zinc-400 transition-colors select-none hover:text-white"
+												onclick={() => toggleSort(categoryDetail.category.category_id, 'rank')}
+											>
+												Rank
+												<SortIcon
+													direction={getSortDirection(categoryDetail.category.category_id, 'rank')}
+													class="ml-1"
+												/>
+											</th>
 											<th class="px-4 py-3 text-left font-medium text-zinc-400">Athlete</th>
 											<th class="px-4 py-3 text-left font-medium text-zinc-400">Country</th>
 											<th
@@ -262,29 +268,30 @@
 									</thead>
 									<tbody>
 										{#each sortParticipants(categoryDetail.participants, categoryDetail.category.category_id) as participant (participant.athlete.athlete_id)}
+											{@const rank = participant.rank}
 											<tr
 												class="border-b border-zinc-800/50 transition-colors hover:bg-zinc-900/30
 												{participant.is_disqualified
 													? 'opacity-50'
-													: participant.rank === 1
+													: rank === 1
 														? 'bg-gradient-to-r from-yellow-500/5 via-transparent to-transparent shadow-lg shadow-yellow-900/20'
-														: participant.rank === 2
+														: rank === 2
 															? 'bg-gradient-to-r from-zinc-400/5 via-transparent to-transparent'
-															: participant.rank === 3
+															: rank === 3
 																? 'bg-gradient-to-r from-orange-700/5 via-transparent to-transparent'
 																: ''}"
 											>
 												<td class="px-4 py-3 text-white">
 													{#if participant.is_disqualified}
 														<span class="text-red-400">DQ</span>
-													{:else if participant.rank === 1}
-														<span class="font-semibold text-yellow-400">🥇 {participant.rank}</span>
-													{:else if participant.rank === 2}
-														<span class="font-semibold text-zinc-300">🥈 {participant.rank}</span>
-													{:else if participant.rank === 3}
-														<span class="font-semibold text-orange-400">🥉 {participant.rank}</span>
+													{:else if rank === 1}
+														<span class="font-semibold text-yellow-400">🥇 {rank}</span>
+													{:else if rank === 2}
+														<span class="font-semibold text-zinc-300">🥈 {rank}</span>
+													{:else if rank === 3}
+														<span class="font-semibold text-orange-400">🥉 {rank}</span>
 													{:else}
-														{participant.rank || '-'}
+														{rank || '-'}
 													{/if}
 												</td>
 												<td class="px-4 py-3 text-white">
