@@ -5,6 +5,7 @@ export interface RankingAthlete {
 	slug: string;
 	country: string;
 	gender: string;
+	bodyweight: number | null;
 }
 
 export interface RankingCompetition {
@@ -16,6 +17,7 @@ export interface RankingCompetition {
 export interface RankingEntry {
 	rank: number;
 	athlete: RankingAthlete;
+	ris: number;
 	total: number;
 	muscleup: number;
 	pullup: number;

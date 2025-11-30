@@ -110,6 +110,10 @@
 		const codePoints = [...countryCode.toUpperCase()].map((char) => 127397 + char.charCodeAt(0));
 		return String.fromCodePoint(...codePoints);
 	}
+
+	function formatRIS(ris: number): string {
+		return ris && ris > 0 ? ris.toFixed(2) : '-';
+	}
 </script>
 
 <svelte:head>
@@ -205,6 +209,7 @@
 							<th class="px-4 py-3 text-left font-medium text-zinc-400">Rank</th>
 							<th class="px-4 py-3 text-left font-medium text-zinc-400">Athlete</th>
 							<th class="px-4 py-3 text-left font-medium text-zinc-400">Country</th>
+							<th class="px-4 py-3 text-left font-medium text-zinc-400">RIS</th>
 							{#each movements as movement (movement.value)}
 								<th
 									class="cursor-pointer px-4 py-3 text-left font-medium transition-colors select-none hover:text-white {movementFilter ===
@@ -267,7 +272,8 @@
 										<span>{entry.athlete.country}</span>
 									</div>
 								</td>
-								<td class="px-4 py-3 font-medium text-white">{formatWeight(entry.total)}</td>
+								<td class="px-4 py-3 font-medium text-zinc-400">{formatRIS(entry.ris)}</td>
+								<td class="px-4 py-3 font-medium text-zinc-400">{formatWeight(entry.total)}</td>
 								<td class="px-4 py-3 text-zinc-400">{formatWeight(entry.muscleup)}</td>
 								<td class="px-4 py-3 text-zinc-400">{formatWeight(entry.pullup)}</td>
 								<td class="px-4 py-3 text-zinc-400">{formatWeight(entry.dips)}</td>
