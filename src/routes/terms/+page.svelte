@@ -22,21 +22,12 @@
 				OpenStreetlifting is an open source project dedicated to creating a permanent, traceable
 				archive of streetlifting competition data. The source code is licensed under the
 				<a
-					href="https://github.com/openstreetlifting/openstreetlifting_backend/blob/main/LICENSE-MIT"
+					href="https://www.gnu.org/licenses/gpl-3.0.html"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="text-zinc-300 transition-colors hover:text-white"
 				>
-					MIT License
-				</a>
-				and
-				<a
-					href="https://github.com/openstreetlifting/openstreetlifting_backend/blob/main/LICENSE-APACHE"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-zinc-300 transition-colors hover:text-white"
-				>
-					Apache License 2.0
+					GNU General Public License v3.0
 				</a>.
 			</p>
 			<p class="mb-4 leading-relaxed font-light text-zinc-400">
@@ -134,23 +125,13 @@
 			<p class="mb-4 leading-relaxed font-light text-zinc-400">
 				The OpenStreetlifting source code is open source and licensed under the
 				<a
-					href="https://github.com/openstreetlifting/openstreetlifting_backend/blob/main/LICENSE-MIT"
+					href="https://www.gnu.org/licenses/gpl-3.0.html"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="text-zinc-300 transition-colors hover:text-white"
 				>
-					MIT License
-				</a>
-				and
-				<a
-					href="https://github.com/openstreetlifting/openstreetlifting_backend/blob/main/LICENSE-APACHE"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-zinc-300 transition-colors hover:text-white"
-				>
-					Apache License 2.0
-				</a>. You are free to use, modify, and distribute the code in accordance with these
-				licenses.
+					GNU General Public License v3.0
+				</a>. You are free to use, modify, and distribute the code in accordance with this license.
 			</p>
 			<p class="mb-4 leading-relaxed font-light text-zinc-400">
 				All competition and athlete data in the database is released into the public domain and is

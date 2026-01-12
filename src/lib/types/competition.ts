@@ -1,14 +1,14 @@
 export interface Federation {
 	federation_id: string;
 	name: string;
-	abbreviation: string;
-	country: string;
+	abbreviation: string | null;
+	country: string | null;
 }
 
 export interface Movement {
 	movement_name: string;
 	is_required: boolean;
-	display_order: number;
+	display_order: number | null;
 }
 
 export interface Competition {
@@ -17,11 +17,11 @@ export interface Competition {
 	created_at: string;
 	slug: string;
 	status: 'upcoming' | 'ongoing' | 'completed';
-	venue: string;
-	city: string;
-	country: string;
-	start_date: string;
-	end_date: string;
+	venue: string | null;
+	city: string | null;
+	country: string | null;
+	start_date: string | null;
+	end_date: string | null;
 	federation: Federation;
 	movements: Movement[];
 }
@@ -32,21 +32,21 @@ export interface CompetitionFilters {
 	search?: string;
 }
 
-export interface Athlete {
+export interface AthleteInfo {
 	athlete_id: string;
 	first_name: string;
 	last_name: string;
 	gender: string;
 	country: string;
-	nationality: string;
 	slug: string;
+	bodyweight?: number | null;
 }
 
 export interface Attempt {
 	attempt_number: number;
 	weight: string;
 	is_successful: boolean;
-	passing_judges: number;
+	passing_judges: number | null;
 	no_rep_reason: string | null;
 }
 
@@ -57,7 +57,7 @@ export interface Lift {
 }
 
 export interface Participant {
-	athlete: Athlete;
+	athlete: AthleteInfo;
 	bodyweight: string | null;
 	rank: number | null;
 	total: string;
@@ -92,4 +92,10 @@ export interface CompetitionDetail {
 	end_date: string | null;
 	federation: Federation;
 	categories: CategoryDetail[];
+}
+
+export interface CompetitionInfo {
+	competition_id: string;
+	name: string;
+	date: string | null;
 }

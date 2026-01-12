@@ -133,25 +133,15 @@
 
 		<div class="mt-12 border-t border-zinc-800/50 pt-8">
 			<p class="text-sm font-light text-zinc-500">
-				© {new Date().getFullYear()} OpenStreetlifting. Open source under
+				© {new Date().getFullYear()} OpenStreetlifting. Open source under the
 				<a
-					href="https://github.com/openstreetlifting/openstreetlifting_backend/blob/main/LICENSE-MIT"
+					href="https://www.gnu.org/licenses/gpl-3.0.html"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="text-zinc-400 transition-colors hover:text-white"
 				>
-					MIT
-				</a>
-				and
-				<a
-					href="https://github.com/openstreetlifting/openstreetlifting_backend/blob/main/LICENSE-APACHE"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="text-zinc-400 transition-colors hover:text-white"
-				>
-					Apache 2.0
-				</a>
-				licenses.
+					GNU General Public License v3.0
+				</a>.
 			</p>
 		</div>
 	</div>

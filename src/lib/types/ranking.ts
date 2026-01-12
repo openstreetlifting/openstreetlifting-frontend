@@ -1,32 +1,18 @@
-export interface RankingAthlete {
-	athlete_id: string;
-	first_name: string;
-	last_name: string;
-	slug: string;
-	country: string;
-	gender: string;
-	bodyweight: number | null;
-}
-
-export interface RankingCompetition {
-	competition_id: string;
-	name: string;
-	date: string;
-}
+import type { AthleteInfo, CompetitionInfo } from './competition';
 
 export interface RankingEntry {
 	rank: number;
-	athlete: RankingAthlete;
+	athlete: AthleteInfo;
 	ris: number;
 	total: number;
 	muscleup: number;
 	pullup: number;
 	dips: number;
 	squat: number;
-	competition: RankingCompetition;
+	competition: CompetitionInfo;
 }
 
-export interface PaginationInfo {
+export interface PaginationMeta {
 	page: number;
 	page_size: number;
 	total_items: number;
@@ -35,7 +21,7 @@ export interface PaginationInfo {
 
 export interface RankingsResponse {
 	data: RankingEntry[];
-	pagination: PaginationInfo;
+	pagination: PaginationMeta;
 }
 
 export interface RankingFilters {
